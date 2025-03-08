@@ -4,6 +4,8 @@ import {
   createAccount,
   loginUser,
   refreshUserAccessToken,
+  sendPasswordResetEmail,
+  verifyEmail,
 } from "../services/auth.service";
 import {
   clearAuthCookies,
@@ -11,7 +13,12 @@ import {
   getRefreshTokenCookieOptions,
   setAuthCookies,
 } from "../utils/cookies";
-import { loginSchema, registerSchema } from "./auth.schemas";
+import {
+  emailSchema,
+  loginSchema,
+  registerSchema,
+  verificationCodeSchema,
+} from "./auth.schemas";
 import { verifyToken } from "../utils/jwt";
 import SessionModel from "../models/session.model";
 import appAssert from "../utils/appAssert";
@@ -82,4 +89,26 @@ export const refreshTokenHandler = catchErrors(async (req, res, next) => {
     .json({
       message: "Access token refreshed successfully",
     });
+});
+
+export const verifyEmailHandler = catchErrors(async (req, res, next) => {
+  const verificationCode = verificationCodeSchema.parse(req.params.code);
+
+  // call service
+  await verifyEmail(verificationCode);
+
+  return res.status(OK).json({
+    message: "Email verified successfully",
+  });
+});
+
+export const sendpasswordResetHandler = catchErrors(async (req, res, next) => {
+  const email = emailSchema.parse(req.body.email);
+
+  // call service
+  await sendPasswordResetEmail(email);
+
+  return res.status(OK).json({
+    message: "Password reset link sent successfully",
+  });
 });
