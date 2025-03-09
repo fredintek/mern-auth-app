@@ -1,0 +1,223 @@
+{
+  "info": {
+    "_postman_id": "c46e16de-c4e2-4586-8b4f-3b0595f67453",
+    "name": "Mern Auth App",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+    "_exporter_id": "26069261",
+    "_collection_link": "https://crimson-crescent-489238.postman.co/workspace/Megabliss-~8bd3b070-2c87-46e5-b95a-2db92161d86c/collection/26069261-c46e16de-c4e2-4586-8b4f-3b0595f67453?action=share&source=collection_link&creator=26069261"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "register user",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"cole.palmer@email.com\",\n    \"password\": \"A@123456789\",\n    \"confirmPassword\": \"A@123456789\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{BASE-URL}}/auth/register"
+          },
+          "response": []
+        },
+        {
+          "name": "login user",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"harry.kane@email.com\",\n    \"password\": \"A@123456789\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{BASE-URL}}/auth/login"
+          },
+          "response": []
+        },
+        {
+          "name": "logout user",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": "{{BASE-URL}}/auth/logout"
+          },
+          "response": []
+        },
+        {
+          "name": "verify email",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE-URL}}/auth/email/verify/:code",
+              "host": ["{{BASE-URL}}"],
+              "path": ["auth", "email", "verify", ":code"],
+              "variable": [
+                {
+                  "key": "code",
+                  "value": "67ccb3082f5c40dd9b291914"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "forgot password",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"harry.kane@email.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{BASE-URL}}/auth/password/forgot"
+          },
+          "response": []
+        },
+        {
+          "name": "reset password",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"verificationCode\": \"67cd4328c1c38aacb8f1741f\",\n    \"password\": \"A@123456789\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{BASE-URL}}/auth/password/reset"
+          },
+          "response": []
+        },
+        {
+          "name": "refresh access token",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": "{{BASE-URL}}/auth/refresh"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "get current logged in user",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": "{{BASE-URL}}/user"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Session",
+      "item": [
+        {
+          "name": "health-check",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": "{{BASE-URL}}"
+          },
+          "response": []
+        },
+        {
+          "name": "get all active sessions",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": "{{BASE-URL}}/sessions"
+          },
+          "response": []
+        },
+        {
+          "name": "delete session",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE-URL}}/sessions/:id",
+              "host": ["{{BASE-URL}}"],
+              "path": ["sessions", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "67cd438ac1c38aacb8f17427"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
