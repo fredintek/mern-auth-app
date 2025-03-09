@@ -21,6 +21,9 @@ import {
 } from "../constants/http";
 import { refreshTokenSignOptions, signToken, verifyToken } from "../utils/jwt";
 import { sendMail } from "../utils/sendMail";
+import { resetPasswordSchema } from "../controllers/auth.schemas";
+import { z } from "zod";
+import { hashValue } from "../utils/bcrypt";
 
 export type CreateAccountParams = {
   email: string;
@@ -227,5 +230,37 @@ export const sendPasswordResetEmail = async (email: string) => {
   return {
     url,
     emailId: data?.id,
+  };
+};
+
+export const resetPassword = async (
+  resetPasswordBody: z.infer<typeof resetPasswordSchema>
+) => {
+  // get the verification code
+  const validCode = await VerificationCodeModel.findOne({
+    _id: resetPasswordBody.verificationCode,
+    type: VerificationCodeTypes.PasswordReset,
+    expiresAt: { $gt: new Date() },
+  });
+
+  appAssert(validCode, NOT_FOUND, "Invalid or expired verification code");
+
+  // update the users password
+  const updatedUser = await UserModel.findByIdAndUpdate(
+    validCode.userId,
+    { password: await hashValue(resetPasswordBody.password) },
+    { new: true }
+  );
+
+  appAssert(updatedUser, INTERNAL_SERVER_ERROR, "Failed to reset password");
+
+  await validCode.deleteOne();
+
+  // delete all sessions
+  await SessionModel.deleteMany({ userId: updatedUser._id });
+
+  // return the user
+  return {
+    user: updatedUser.omitPassword(),
   };
 };
